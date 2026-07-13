@@ -17,15 +17,20 @@ import org.springframework.web.bind.annotation.RestController;
 import com.johan.chatBotIntegration.model.ChatBot;
 import com.johan.chatBotIntegration.service.ChatBotService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 @RestController
 @RequestMapping("/api/chatbots")
+@Tag(name = "ChatBot Controller", description = "APIs for ChatBot Management")
 public class ChatBotController {
 
     @Autowired
     private ChatBotService chatBotService;
 
     @PostMapping
+    @Operation(summary = "Add new ChatBot")
     public ResponseEntity<?> addChatBot(@RequestBody ChatBot chatBot) {
         try {
             ChatBot savedChatBot = chatBotService.saveChatBot(chatBot);
@@ -36,6 +41,7 @@ public class ChatBotController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all ChatBots") 
     public ResponseEntity<?> getAllChatBots() {
         try {
             List<ChatBot> chatBots = chatBotService.getAllChatBots();
@@ -46,6 +52,7 @@ public class ChatBotController {
     }
 
     @GetMapping("/integration")
+    @Operation(summary = "Get Integration Status")
     public ResponseEntity<?> getIntegrationStatus(@RequestParam String platform) {
         try {
             List<ChatBot> chatBots = chatBotService.getIntegrationStatus(platform);
@@ -56,6 +63,7 @@ public class ChatBotController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete ChatBot")
     public ResponseEntity<?> deleteChatBot(@PathVariable Long id) {
         try {
             chatBotService.deleteChatBot(id);
